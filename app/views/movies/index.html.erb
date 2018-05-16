@@ -22,10 +22,10 @@
         <td><%= movie.title %></td>
         <td><%= movie.description %></td>
         <td><%= movie.duration %></td>
-        <td><%= movie.category %></td>
-        <td><%= movie.director %></td>
+        <td><%= movie.category.name %></td>
+        <td><%= movie.director.full_name %></td>
         <td><%= movie.release_date %></td>
-        <td><%= movie.address %></td>
+        <td><%= movie.address.street %></td>
         <td><%= link_to 'Show', movie %></td>
         <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
         <td><%= link_to 'Destroy', movie, method: :delete, data: { confirm: 'Are you sure?' } %></td>

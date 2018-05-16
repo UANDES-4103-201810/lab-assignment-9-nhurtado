@@ -28,12 +28,12 @@
 
   <div class="field">
     <%= form.label :category_id %>
-    <%= form.text_field :category_id, id: :movie_category_id %>
+    <%= form.collection_select :category_id, Category.all, :id, :name, :selected => @movie.category_id  %>
   </div>
 
   <div class="field">
     <%= form.label :director_id %>
-    <%= form.text_field :director_id, id: :movie_director_id %>
+    <%= form.collection_select :director_id, Director.all, :id, :full_name, :selected => @movie.director_id  %>
   </div>
 
   <div class="field">
@@ -42,8 +42,16 @@
   </div>
 
   <div class="field">
-    <%= form.label :address_id %>
-    <%= form.text_field :address_id, id: :movie_address_id %>
+    <%= form.fields_for :address_attributes do |add| %>
+      <%= add.label :street %>
+      <%= add.text_field :street %>
+      <%= add.label :apartment %>
+      <%= add.check_box :apartment %>
+      <%= add.label :description %>
+      <%= add.text_field :description %>
+      <%= add.label :zipcode %>
+      <%= add.text_field :zipcode %>
+    <% end %>
   </div>
 
   <div class="actions">

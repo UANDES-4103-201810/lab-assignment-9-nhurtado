@@ -8,7 +8,7 @@
   <%= label_tag :description %>  
   <%= text_field_tag(:description) %>
   <%= label_tag :birth_date %>  
-  <%= select_date Date.today, prefix: :birth_date  %>
+  <%= date_field_tag(:birth_date)  %>
   <p>
   <%= label_tag :actor %>  
   <%= radio_button_tag(:person_type, "actor") %>

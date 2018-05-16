@@ -1,64 +1,64 @@
 <p id="notice"><%= notice %></p>
 
+<% if params[:q].present? %>
+	<% if params[:q] == "director" %>
+		<h1>Directors</h1>
 
-<% if @directors.present? %>
-<h1>Directors</h1>
+		<table>
+		  <thead>
+			<tr>
+			  <th>First name</th>
+			  <th>Last name</th>
+			  <th>Birth date</th>
+			  <th>Description</th>
+			  <th colspan="3"></th>
+			</tr>
+		  </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Birth date</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+		  <tbody>
+			<% @directors.each do |director| %>
+			  <tr>
+				<td><%= director.first_name %></td>
+				<td><%= director.last_name %></td>
+				<td><%= director.birth_date %></td>
+				<td><%= director.description %></td>
+				<td><%= link_to 'Show', director %></td>
+				<td><%= link_to 'Edit', edit_director_path(director) %></td>
+				<td><%= link_to 'Destroy', director, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			  </tr>
+			<% end %>
+		  </tbody>
+		</table>
+	<% elsif params[:q] == "actor" %>
+		<h1>Actors</h1>
 
-  <tbody>
-    <% @directors.each do |director| %>
-      <tr>
-        <td><%= director.first_name %></td>
-        <td><%= director.last_name %></td>
-        <td><%= director.birth_date %></td>
-        <td><%= director.description %></td>
-        <td><%= link_to 'Show', director %></td>
-        <td><%= link_to 'Edit', edit_director_path(director) %></td>
-        <td><%= link_to 'Destroy', director, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<% elsif @actors.present? %>
-<h1>Actors</h1>
+		<table>
+		  <thead>
+			<tr>
+			  <th>First name</th>
+			  <th>Last name</th>
+			  <th>Birth date</th>
+			  <th>Description</th>
+			  <th colspan="3"></th>
+			</tr>
+		  </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Birth date</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @actors.each do |actor| %>
-      <tr>
-        <td><%= actor.first_name %></td>
-        <td><%= actor.last_name %></td>
-        <td><%= actor.birth_date %></td>
-        <td><%= actor.description %></td>
-        <td><%= link_to 'Show', actor %></td>
-        <td><%= link_to 'Edit', edit_actor_path(actor) %></td>
-        <td><%= link_to 'Destroy', actor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+		  <tbody>
+			<% @actors.each do |actor| %>
+			  <tr>
+				<td><%= actor.first_name %></td>
+				<td><%= actor.last_name %></td>
+				<td><%= actor.birth_date %></td>
+				<td><%= actor.description %></td>
+				<td><%= link_to 'Show', actor %></td>
+				<td><%= link_to 'Edit', edit_actor_path(actor) %></td>
+				<td><%= link_to 'Destroy', actor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			  </tr>
+			<% end %>
+		  </tbody>
+		</table>
+	<% end %>
 <% end %>
-
 <br>
 
 <%= link_to 'New Person', persons_new_path %>
