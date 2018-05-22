@@ -27,6 +27,12 @@ class MoviesController < ApplicationController
     @movie = Movie.new(movie_params)
     respond_to do |format|
       if @movie.save
+        if params[:data_value].present?
+          @actors=params[:data_value]
+          @actors.each do |item|
+	    ActorMovie.create(actor_id: item,movie_id: @movie.id)
+	  end
+        end
         format.html { redirect_to @movie, notice: 'Movie was successfully created.' }
         format.json { render :show, status: :created, location: @movie }
       else
@@ -68,6 +74,6 @@ class MoviesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
-      params.require(:movie).permit(:title, :description, :duration, :category_id, :director_id, :release_date,address_attributes: [ :street, :apartment, :description, :zipcode])
+      params.require(:movie).permit(:title, :description, :duration, :category_id, :director_id, :release_date, :data_values ,address_attributes: [ :street, :apartment, :description, :zipcode])
     end
 end

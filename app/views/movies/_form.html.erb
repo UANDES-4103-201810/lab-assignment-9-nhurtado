@@ -1,4 +1,4 @@
-<%= form_with(model: movie, local: true) do |form| %>
+<%= form_with(model: movie, local: true, :id => "movieForm"  ) do |form| %>
   <% if movie.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(movie.errors.count, "error") %> prohibited this movie from being saved:</h2>
@@ -10,51 +10,102 @@
       </ul>
     </div>
   <% end %>
+  <div style="float: left;">
+	  <div class="field">
+	    <%= form.label :title %>
+	    <%= form.text_field :title, id: :movie_title %>
+	  </div>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title, id: :movie_title %>
-  </div>
+	  <div class="field">
+	    <%= form.label :description %>
+	    <%= form.text_field :description, id: :movie_description %>
+	  </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_field :description, id: :movie_description %>
-  </div>
+	  <div class="field">
+	    <%= form.label :duration %>
+	    <%= form.number_field :duration, id: :movie_duration %>
+	  </div>
 
-  <div class="field">
-    <%= form.label :duration %>
-    <%= form.number_field :duration, id: :movie_duration %>
-  </div>
+	  <div class="field">
+	    <%= form.label :category_id %>
+	    <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "Select Category", :selected => @movie.category_id  %>
+	  </div>
 
-  <div class="field">
-    <%= form.label :category_id %>
-    <%= form.collection_select :category_id, Category.all, :id, :name, :selected => @movie.category_id  %>
-  </div>
+	  <div class="field">
+	    <%= form.label :director_id %>
+	    <%= form.collection_select :director_id, Director.all, :id, :full_name, prompt: "Select Director", :selected => @movie.director_id  %>
+	  </div>
+	 
+	  <div class="field">
+	    <%= form.label :actors %>
+	    <%= select_tag :actors, options_from_collection_for_select(Actor.all,"id","full_name"), prompt: "Select Actor", :id => "actors_list" %>
+	  </div>
 
-  <div class="field">
-    <%= form.label :director_id %>
-    <%= form.collection_select :director_id, Director.all, :id, :full_name, :selected => @movie.director_id  %>
-  </div>
+	  <div class="field">
+	    <%= form.label :release_date %>
+	    <%= form.datetime_select :release_date, id: :movie_release_date %>
+	  </div>
 
-  <div class="field">
-    <%= form.label :release_date %>
-    <%= form.datetime_select :release_date, id: :movie_release_date %>
-  </div>
+	  <div class="field">
+	    <%= form.fields_for :address_attributes do |add| %>
+	      <%= add.label :street %>
+	      <%= add.text_field :street %>
+	      <%= add.label :apartment %>
+	      <%= add.check_box :apartment %>
+	      <%= add.label :description %>
+	      <%= add.text_field :description %>
+	      <%= add.label :zipcode %>
+	      <%= add.text_field :zipcode %>
+	    <% end %>
+	  </div>
 
-  <div class="field">
-    <%= form.fields_for :address_attributes do |add| %>
-      <%= add.label :street %>
-      <%= add.text_field :street %>
-      <%= add.label :apartment %>
-      <%= add.check_box :apartment %>
-      <%= add.label :description %>
-      <%= add.text_field :description %>
-      <%= add.label :zipcode %>
-      <%= add.text_field :zipcode %>
-    <% end %>
+	  <div class="actions">
+	    <%= form.submit%>
+	  </div>
+          <%= link_to 'Back', movies_path %>
+  </div> 
+  <div style="margin-left:400px;">
+      <h1>Selected Actors</h1>
+	<table>
+	  <thead>
+	    <tr>
+	      <th>Name</th>
+              <th>Remove</th>
+	    </tr>
+	  </thead>
+	  <tbody id="actors">
+	  </tbody>
+	</table>
   </div>
+<script>
+var actors_id = []
+$( document ).ready(function(){
+    $('#actors_list').on('change', function(){
+        var  e = document.getElementById("actors_list");
+	var  val = e.options [e.selectedIndex].value;
+	var  text = e.options [e.selectedIndex].text;
+	e.remove(e.selectedIndex);
+        $('#actors').append('<tr id = '+val+'><td>'+text+'</td><td><button type="button" onclick="return remove_actor('+val+')">x</button></td></tr>');
+        actors_id.push(val);
+        alert(JSON.stringify(actors_id));
+    });
+});
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+$('#movieForm').submit(function(){
+    $.ajax({
+        url : "/movies",
+        type : "post",
+        data : { data_value: actors_id }
+    });
+    return true;
+});
+
+function remove_actor(val) {
+  $('#'+val).remove();
+  var index = actors_id.indexOf(val.toString());
+  actors_id.splice(index, 1);
+  alert(JSON.stringify(actors_id));
+}
+</script>
+
 <% end %>
